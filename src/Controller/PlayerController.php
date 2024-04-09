@@ -25,9 +25,13 @@ class PlayerController extends AbstractController
     public function listPlayerAction(): Response
     {
         $allPlayer = $this->playerRepository->findAll();
+        $allClub = $this->playerRepository->findDistinctsClub();
+        $allNationalTeam = $this->playerRepository->findDistinctsNationalTeam();
 
         return $this->render('player/index.html.twig', [
             'players' => $allPlayer,
+            'clubs' => $allClub,
+            'teamNational' => $allNationalTeam,
         ]);
     }
 
@@ -111,6 +115,16 @@ class PlayerController extends AbstractController
 
         return $this->render('player/edit.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/detail-player/{id}', name: 'player_detail')]
+    public function detailPlayerAction(int $id)
+    {
+        $player = $this->playerRepository->find($id);
+
+        return $this->render('player/detail.html.twig', [
+            'player' => $player,
         ]);
     }
 }

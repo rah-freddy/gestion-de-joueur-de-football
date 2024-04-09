@@ -4,52 +4,113 @@
 
 {% block body %}
 
-<div class="example-wrapper">
+<div class="container">
     {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
+        <div class="alert alert-success" role="alert">
             {{message}}
         </div>
     {% endfor %}
     <h1>Liste de joueurs</h1>
-    <table>
+    <br>
+    <select id="filterClub" style="font-size: 20px;">
+        <option value="all">Tous</option>
+        {% if clubs is defined %}
+            {% for club in clubs %}
+                <option value="{{ club }}">{{ club }}</option>
+            {% endfor %}
+        {% endif %}
+    </select>
+    <select id="filterNationalTeam" style="font-size: 20px;">
+        <option value="all">Tous</option>
+        {% if teamNational is defined %}
+            {% for national in teamNational %}
+                <option value="{{ national }}">{{ national }}</option>
+            {% endfor %}
+        {% endif %}
+    </select>
+    <a href="{{ path('player_create') }}" style="float: right;">
+        <button type="button" class="btn btn-success">Ajouter nouveau</button>
+    </a>
+    </br>
+    </br>
+    <table class="table table-bordered">
         <thead>
-            <tr>
-                <td>Nom</td>
-                <td>Date de naissance</td>
-                <td>Nationalité</td>
-                <td>Parcours</td>
-                <td>Nombre de buts</td>
-                <td>Equipe (Club)</td>
-                <td>Equipe nationale</td>
+            <tr class="align-text">
+                <th scope="col">Nom</th>
+                <th scope="col">Date de naissance</th>
+                <th scope="col">Nationalité</th>
+                <th scope="col">Club</th>
+                <th scope="col">Equipe nationale</th>
+                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
             {% if players is defined %}
                 {% for player in players %}
-                    <tr>
+                    <tr class="all {{ player.clubTeam.name }} {{ player.nationalTeam.name }}">
                         <td>{{ player.name }}</td>
                         <td>{{ player.birthDate|date('d/m/Y') }}</td>
                         <td>{{ player.nationality }}</td>
-                        <td>{{ player.course }}</td>
-                        <td>{{ player.goalsNumber }}</td>
                         <td>{{ player.clubTeam.name }}</td>
                         <td>{{ player.nationalTeam.name }}</td>
-                        <td>
+                        <td class="align-text">
                             <a href="{{ path('player_update', {'id': player.id}) }}">
-								<button class=" btn btn-danger" type=" button">Modifier</button>
-							</a>
-                            <a href="{{ path('player_delete', {'id': player.id}) }}" onclick="return confirm('Voulez vous supprimer?');">
-								<button class=" btn btn-danger" type=" button">Supprimer</button>
-							</a>
-                            <a href="#">
-								<button class=" btn btn-danger" type=" button">Voir détail</button>
-							</a>
+                                <button type="button" class="btn btn-primary">Modifier</button>
+                            </a>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ConfirmModalDeletePlayer_{{ player.id }}">Supprimer</button>
+                            <a href="{{ path('player_detail', {'id': player.id}) }}">
+                                <button ctype="button" class="btn btn-info">Voir détail</button>
+                            </a>
                         </td>
+                        <div class="modal fade" id="ConfirmModalDeletePlayer_{{ player.id }}" tabindex="-1" role="dialog" aria-labelledby="ConfirmModalDeletePlayerLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="ConfirmModalDeletePlayerLabel">Etes-vous sur?</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Cet joueur sera supprimer
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                        <a href="{{ path('player_delete', {'id': player.id}) }}">
+                                            <button type="button" class="btn btn-danger">Supprimer</button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </tr>
                 {% endfor %}
             {% endif %}
         </tbody>
     </table>
-    <a href="{{ path('player_create') }}">Créer un nouveau joueur</a>
 </div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#filterClub').change(function() {
+            var selectedClub = $(this).val();
+            $('tbody tr').each(function() {
+                if ($(this).hasClass(selectedClub)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+        $('#filterNationalTeam').change(function() {
+            var selectedNationalTeam = $(this).val();
+            $('tbody tr').each(function() {
+                if ($(this).hasClass(selectedNationalTeam)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });        
+</script>
 {% endblock %}

@@ -1,40 +1,68 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Equipe (club){% endblock %}
+{% block title %}Equipe{% endblock %}
 
 {% block body %}
 
-<div class="example-wrapper">
+<div class="container">
     {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
+        <div class="alert alert-success" role="alert">
             {{message}}
         </div>
     {% endfor %}
     <h1>Liste des équipes (club)</h1>
-    <table>
+    <br>
+    <a href="{{ path('club_create') }}" style="float: right;">
+        <button type="button" class="btn btn-success">Ajouter nouveau</button>
+    </a>
+    <br>
+    <br>
+    <table class="table">
         <thead>
-            <tr>
-                <td>Nom</td>
+            <tr class="align-text">
+                <td>
+                    <strong>Nom</strong>
+                </td>
+                <td>
+                    <strong>Action</strong>
+                </td>
             </tr>
         </thead>
         <tbody>
             {% if clubs is defined %}
                 {% for club in clubs %}
-                    <tr>
+                    <tr class="align-text">
                         <td>{{ club.name }}</td>
                         <td>
                             <a href="{{ path('club_update', {'id': club.id}) }}">
-								<button class=" btn btn-danger" type=" button">Modifier</button>
+								<button type="button" class="btn btn-primary">Modifier</button>
 							</a>
-                            <a href="{{ path('club_delete', {'id': club.id}) }}" onclick="return confirm('Voulez vous supprimer?');">
-								<button class=" btn btn-danger" type=" button">Supprimer</button>
-							</a>
+							<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ConfirmModalDeleteClub_{{ club.id }}">Supprimer</button>
                         </td>
                     </tr>
+                    <div class="modal fade" id="ConfirmModalDeleteClub_{{ club.id }}" tabindex="-1" role="dialog" aria-labelledby="ConfirmModalDeleteClubLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ConfirmModalDeleteClubLabel">Etes-vous sur?</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                 </div>
+                            <div class="modal-body">
+                                Cet équipe sera supprimer
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                <a href="{{ path('club_delete', {'id': club.id}) }}">
+                                    <button type="button" class="btn btn-danger">Supprimer</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
             {% endif %}
         </tbody>
     </table>
-    <a href="{{ path('club_create') }}">Créer un nouveau équipe (club)</a>
 </div>
 {% endblock %}
