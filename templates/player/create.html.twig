@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau joueur{% endblock %}
+
+{% block body %}
+
+	<div class="container">
+		<h3>Ajouter nouveau joueur</h3>
+		{{form_start(form)}}
+            <div class="control-group">
+                <div class="controls">
+                    {{ form_label(form.name) }}
+                    {{ form_widget(form.name, {'attr':{'class':'form-control'}}) }}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+
+                    {{ form_label(form.birthDate) }}
+                    {{ form_widget(form.birthDate, {'attr':{'class':'form-control'}}) }}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    {{ form_label(form.nationality) }}
+                    {{ form_widget(form.nationality, {'attr':{'class':'form-control'}}) }}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    {{ form_label(form.course) }}
+                    {{ form_widget(form.course, {'attr':{'class':'form-control'}}) }}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    {{ form_label(form.goalsNumber) }}
+                    {{ form_widget(form.goalsNumber, {'attr':{'class':'form-control'}}) }}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    {{ form_label(form.clubTeam) }}
+                    {{ form_widget(form.clubTeam, {'attr':{'class':'form-control'}}) }}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    {{ form_label(form.nationalTeam) }}
+                    {{ form_widget(form.nationalTeam, {'attr':{'class':'form-control'}}) }}
+                </div>
+            </div>
+
+
+            <div class="control-group">
+                <div class="controls">
+                    <button class="btn btn-primary">Ajouter</button>
+                </div>
+            </div>
+		{{form_end(form)}}
+	</div>
+
+{% endblock %}
