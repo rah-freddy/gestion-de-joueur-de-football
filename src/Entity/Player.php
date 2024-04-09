@@ -17,6 +17,9 @@ class Player
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $birthDate = null;
+
     #[ORM\Column(length: 255)]
     private ?string $nationality = null;
 
@@ -26,14 +29,17 @@ class Player
     #[ORM\Column]
     private ?int $goalsNumber = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $birthDate = null;
-
     #[ORM\ManyToOne(inversedBy: 'player')]
     private ?ClubTeam $clubTeam = null;
 
     #[ORM\ManyToOne(inversedBy: 'player')]
     private ?NationalTeam $nationalTeam = null;
+
+    //pour afficher le nom de l'équipe dans le champ <select>
+    public function __toString()
+    {
+        return $this->getName();
+    }
 
     public function getId(): ?int
     {
@@ -48,6 +54,18 @@ class Player
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getBirthDate(): ?\DateTimeInterface
+    {
+        return $this->birthDate;
+    }
+
+    public function setBirthDate(\DateTimeInterface $birthDate): static
+    {
+        $this->birthDate = $birthDate;
 
         return $this;
     }
@@ -84,18 +102,6 @@ class Player
     public function setGoalsNumber(int $goalsNumber): static
     {
         $this->goalsNumber = $goalsNumber;
-
-        return $this;
-    }
-
-    public function getBirthDate(): ?\DateTimeInterface
-    {
-        return $this->birthDate;
-    }
-
-    public function setBirthDate(\DateTimeInterface $birthDate): static
-    {
-        $this->birthDate = $birthDate;
 
         return $this;
     }

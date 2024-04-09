@@ -1,20 +1,55 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PlayerController!{% endblock %}
+{% block title %}Joueurs{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/freddy/Downloads/crud_sf_5/src/Controller/PlayerController.php'|file_link(0) }}">src/Controller/PlayerController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/freddy/Downloads/crud_sf_5/templates/player/index.html.twig'|file_link(0) }}">templates/player/index.html.twig</a></code></li>
-    </ul>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{message}}
+        </div>
+    {% endfor %}
+    <h1>Liste de joueurs</h1>
+    <table>
+        <thead>
+            <tr>
+                <td>Nom</td>
+                <td>Date de naissance</td>
+                <td>Nationalité</td>
+                <td>Parcours</td>
+                <td>Nombre de buts</td>
+                <td>Equipe (Club)</td>
+                <td>Equipe nationale</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% if players is defined %}
+                {% for player in players %}
+                    <tr>
+                        <td>{{ player.name }}</td>
+                        <td>{{ player.birthDate|date('d/m/Y') }}</td>
+                        <td>{{ player.nationality }}</td>
+                        <td>{{ player.course }}</td>
+                        <td>{{ player.goalsNumber }}</td>
+                        <td>{{ player.clubTeam.name }}</td>
+                        <td>{{ player.nationalTeam.name }}</td>
+                        <td>
+                            <a href="{{ path('player_update', {'id': player.id}) }}">
+								<button class=" btn btn-danger" type=" button">Modifier</button>
+							</a>
+                            <a href="{{ path('player_delete', {'id': player.id}) }}" onclick="return confirm('Voulez vous supprimer?');">
+								<button class=" btn btn-danger" type=" button">Supprimer</button>
+							</a>
+                            <a href="#">
+								<button class=" btn btn-danger" type=" button">Voir détail</button>
+							</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+    <a href="{{ path('player_create') }}">Créer un nouveau joueur</a>
 </div>
 {% endblock %}

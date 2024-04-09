@@ -18,7 +18,7 @@ class ClubTeam
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\OneToMany(targetEntity: Player::class, mappedBy: 'clubTeam')]
+    #[ORM\OneToMany(targetEntity: Player::class, mappedBy: 'clubTeam', cascade: ['remove'])]
     private Collection $player;
 
     public function __construct()

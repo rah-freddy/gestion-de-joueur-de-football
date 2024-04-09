@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau équipe nationale{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h3>Ajouter nouveau équipe nationale</h3>
+    {{form_start(form)}}
+    <div class="control-group">
+        <div class="controls">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'attr':{'class':'form-control'}}) }}
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button class="btn btn-primary">Ajouter</button>
+        </div>
+    </div>
+    {{form_end(form)}}
+</div>
+
+{% endblock %}

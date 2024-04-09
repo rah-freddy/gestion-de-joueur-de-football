@@ -1,20 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ClubTeamController!{% endblock %}
+{% block title %}Equipe (club){% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/freddy/Downloads/crud_sf_5/src/Controller/ClubTeamController.php'|file_link(0) }}">src/Controller/ClubTeamController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/freddy/Downloads/crud_sf_5/templates/club_team/index.html.twig'|file_link(0) }}">templates/club_team/index.html.twig</a></code></li>
-    </ul>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{message}}
+        </div>
+    {% endfor %}
+    <h1>Liste des équipes (club)</h1>
+    <table>
+        <thead>
+            <tr>
+                <td>Nom</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% if clubs is defined %}
+                {% for club in clubs %}
+                    <tr>
+                        <td>{{ club.name }}</td>
+                        <td>
+                            <a href="{{ path('club_update', {'id': club.id}) }}">
+								<button class=" btn btn-danger" type=" button">Modifier</button>
+							</a>
+                            <a href="{{ path('club_delete', {'id': club.id}) }}" onclick="return confirm('Voulez vous supprimer?');">
+								<button class=" btn btn-danger" type=" button">Supprimer</button>
+							</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+    <a href="{{ path('club_create') }}">Créer un nouveau équipe (club)</a>
 </div>
 {% endblock %}
