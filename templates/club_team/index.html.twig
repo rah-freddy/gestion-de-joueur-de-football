@@ -6,14 +6,19 @@
 
 <div class="container">
     {% for message in app.flashes('success') %}
-        <div class="alert alert-success" role="alert">
-            {{message}}
-        </div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>{{ message }}!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     {% endfor %}
     <h1>Liste des équipes (club)</h1>
     <br>
     <a href="{{ path('club_create') }}" style="float: right;">
-        <button type="button" class="btn btn-success">Ajouter nouveau</button>
+        <button type="button" class="btn btn-success">
+            Ajouter nouveau <ion-icon name="save-outline"></ion-icon>
+        </button>
     </a>
     <br>
     <br>
@@ -30,38 +35,44 @@
         </thead>
         <tbody>
             {% if clubs is defined %}
-                {% for club in clubs %}
-                    <tr class="align-text">
-                        <td>{{ club.name }}</td>
-                        <td>
-                            <a href="{{ path('club_update', {'id': club.id}) }}">
-								<button type="button" class="btn btn-primary">Modifier</button>
-							</a>
-							<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ConfirmModalDeleteClub_{{ club.id }}">Supprimer</button>
-                        </td>
-                    </tr>
-                    <div class="modal fade" id="ConfirmModalDeleteClub_{{ club.id }}" tabindex="-1" role="dialog" aria-labelledby="ConfirmModalDeleteClubLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="ConfirmModalDeleteClubLabel">Etes-vous sur?</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                 </div>
-                            <div class="modal-body">
-                                Cet équipe sera supprimer
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                                <a href="{{ path('club_delete', {'id': club.id}) }}">
-                                    <button type="button" class="btn btn-danger">Supprimer</button>
-                                </a>
-                            </div>
+            {% for club in clubs %}
+            <tr class="align-text">
+                <td>{{ club.name }}</td>
+                <td>
+                    <a href="{{ path('club_update', {'id': club.id}) }}">
+                        <button type="button" class="btn btn-primary">
+                            Modifier <ion-icon name="create-outline"></ion-icon>
+                        </button>
+                    </a>
+                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                        data-target="#ConfirmModalDeleteClub_{{ club.id }}">
+                        Supprimer <ion-icon name="trash"></ion-icon>    
+                    </button>
+                </td>
+            </tr>
+            <div class="modal fade" id="ConfirmModalDeleteClub_{{ club.id }}" tabindex="-1" role="dialog"
+                aria-labelledby="ConfirmModalDeleteClubLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ConfirmModalDeleteClubLabel">Etes-vous sur?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Cet équipe sera supprimer
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                            <a href="{{ path('club_delete', {'id': club.id}) }}">
+                                <button type="button" class="btn btn-danger">Supprimer</button>
+                            </a>
                         </div>
                     </div>
+                </div>
                 {% endfor %}
-            {% endif %}
+                {% endif %}
         </tbody>
     </table>
 </div>
