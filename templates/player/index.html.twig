@@ -40,9 +40,9 @@
     <table class="table table-bordered">
         <thead>
             <tr class="align-text">
-                <th scope="col">Nom</th>
+                <th scope="col" id="triName">Nom</th>
                 <th scope="col">Date de naissance</th>
-                <th scope="col">Nationalité</th>
+                <th scope="col" id="triNumberGoals">Nombre de buts</th>
                 <th scope="col">Club</th>
                 <th scope="col">Equipe nationale</th>
                 <th scope="col">Action</th>
@@ -54,7 +54,7 @@
                     <tr class="all {{ player.clubTeam.name }} {{ player.nationalTeam.name }}">
                         <td>{{ player.name }}</td>
                         <td>{{ player.birthDate|date('d/m/Y') }}</td>
-                        <td>{{ player.nationality }}</td>
+                        <td>{{ player.goalsNumber }}</td>
                         <td>{{ player.clubTeam.name }}</td>
                         <td>{{ player.nationalTeam.name }}</td>
                         <td class="align-text">
@@ -120,6 +120,63 @@
                     $(this).hide();
                 }
             });
+        });
+        var ascending = true;
+        $('#triName').on('click', function() {
+            var table = $(this).closest('table');
+            var rows = table.find('tbody > tr').get();
+            rows.sort(function(a, b) {
+                var nameA = $(a).find('td:eq(0)').text().toUpperCase();
+                var nameB = $(b).find('td:eq(0)').text().toUpperCase();
+                if (ascending) {
+                    return nameA.localeCompare(nameB);
+                } else {
+                    return nameB.localeCompare(nameA);
+                }
+            });
+            $.each(rows, function(index, row) {
+                table.children('tbody').append(row);
+            });
+            ascending = !ascending;
+        });
+        // tri par nombre de buts
+        function sortTableNumberofGoals(columnIndex, order) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = $(".table.table-bordered")[0];
+            switching = true;
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].querySelectorAll("td")[columnIndex];
+                    y = rows[i + 1].querySelectorAll("td")[columnIndex];
+                    if (order === "asc") {
+                        if (Number(x.textContent) > Number(y.textContent)) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (order === "desc") {
+                        if (Number(x.textContent) < Number(y.textContent)) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+        $("#triNumberGoals").click(function() {
+            var order = $(this).data("order");
+            if (order === undefined || order === "desc") {
+                $(this).data("order", "asc");
+            } else {
+                $(this).data("order", "desc");
+            }
+            sortTableNumberofGoals($(this).index(), $(this).data("order"));
         });
     });        
 </script>
